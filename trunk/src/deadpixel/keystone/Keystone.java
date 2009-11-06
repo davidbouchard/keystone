@@ -33,6 +33,8 @@ import processing.xml.XMLWriter;
  *
  * The Keystone object also provides load/save functionality, once you've calibrated the layout to 
  * your liking. 
+ * 
+ * Version: 0.11
  */
 public class Keystone {
 
@@ -191,7 +193,9 @@ public class Keystone {
 
 		case MouseEvent.MOUSE_PRESSED:
 			CornerPinSurface top = null;
-			for (CornerPinSurface s : surfaces) {
+			// navigate the list backwards, as to select 
+			for (int i=surfaces.size()-1; i >= 0; i--) {
+				CornerPinSurface s = (CornerPinSurface)surfaces.get(i);
 				dragged = s.select(x, y);
 				if (dragged != null) {
 					top = s;
@@ -201,9 +205,13 @@ public class Keystone {
 
 			if (top != null) {
 				// moved the dragged surface to the beginning of the list
-				int i = surfaces.indexOf(top);
-				surfaces.remove(i);
-				surfaces.add(0, top);
+				// this actually breaks the load/save order.
+				// in the new version, add IDs to surfaces so we can just 
+				// re-load in the right order (or create a separate list 
+				// for selection/rendering)
+				//int i = surfaces.indexOf(top);
+				//surfaces.remove(i);
+				//surfaces.add(0, top);
 			}
 			break;
 
