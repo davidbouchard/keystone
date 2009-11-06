@@ -6,7 +6,7 @@
 
 	
 <!-- #### (1) where are your processing libraries located? edit location. #### -->
-	<property name="processing" location="/home/david/sketchbook/libraries"/>
+	<property name="processing" location="/Users/david/sketchbook/libraries"/>
 
 
 <!-- #### (2) where are the jar files located that are required for compiling 
@@ -53,7 +53,7 @@
 	<property name="tested:platform"  value="Linux, OSX, Windows XP" />
 	
 <!-- #### (12) the processing version this library has been tested with. edit value. #### -->
-	<property name="tested:processingVersion"  value="1.0.3" />
+	<property name="tested:processingVersion"  value="1.0.9" />
 	
 <!-- #### (13) does the library depend on any other library, dll, jnilib, etc. edit value. #### -->
 	<property name="tested:dependencies"  value="?" />
