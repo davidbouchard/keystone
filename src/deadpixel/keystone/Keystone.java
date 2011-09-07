@@ -18,7 +18,9 @@
 package deadpixel.keystone;
 
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import processing.core.*;
@@ -28,11 +30,12 @@ import processing.xml.XMLWriter;
 /**
  * This class manages the creation and calibration of keystoned surfaces.
  * 
- * To move and warp surfaces, place the Keystone object in calibrate mode. It catch mouse events and 
- * allow you to drag surfaces and control points with the mouse.
- *
- * The Keystone object also provides load/save functionality, once you've calibrated the layout to 
- * your liking. 
+ * To move and warp surfaces, place the Keystone object in calibrate mode. It
+ * catch mouse events and allow you to drag surfaces and control points with the
+ * mouse.
+ * 
+ * The Keystone object also provides load/save functionality, once you've
+ * calibrated the layout to your liking.
  * 
  * Version: 0.11
  */
@@ -47,11 +50,12 @@ public class Keystone {
 	Draggable dragged;
 
 	// calibration mode is application-wide, so I made this flag static
-	// there should only be one Keystone object around anyway 
+	// there should only be one Keystone object around anyway
 	static boolean calibrate;
-	
+
 	/**
-	 * @param parent applet
+	 * @param parent
+	 *            applet
 	 */
 	public Keystone(PApplet parent) {
 		this.parent = parent;
@@ -59,22 +63,25 @@ public class Keystone {
 
 		surfaces = new ArrayList<CornerPinSurface>();
 		dragged = null;
-		
+
 		// check the renderer type
 		// issue a warning if its PGraphics2D
-		PGraphics pg = (PGraphics)parent.g;
-		if ((pg instanceof PGraphics2D) ) {
-			PApplet.println("The keystone library will not work with PGraphics2D as the renderer because it relies on texture mapping. " +
-					"Try P3D, OPENGL or GLGraphics.");
+		PGraphics pg = (PGraphics) parent.g;
+		if ((pg instanceof PGraphics2D)) {
+			PApplet.println("The keystone library will not work with PGraphics2D as the renderer because it relies on texture mapping. "
+					+ "Try P3D, OPENGL or GLGraphics.");
 		}
 	}
 
 	/**
-	 * Creates and registers a new corner pin keystone surface. 
+	 * Creates and registers a new corner pin keystone surface.
 	 * 
-	 * @param w width
-	 * @param h height
-	 * @param res resolution (number of tiles per axis)
+	 * @param w
+	 *            width
+	 * @param h
+	 *            height
+	 * @param res
+	 *            resolution (number of tiles per axis)
 	 * @return
 	 */
 	public CornerPinSurface createCornerPinSurface(int w, int h, int res) {
@@ -84,20 +91,20 @@ public class Keystone {
 	}
 
 	/**
-	 * Starts the calibration mode. Mouse events will be intercepted to drag surfaces 
-	 * and move control points around.
+	 * Starts the calibration mode. Mouse events will be intercepted to drag
+	 * surfaces and move control points around.
 	 */
 	public void startCalibration() {
 		calibrate = true;
 	}
-	
+
 	/**
 	 * Stops the calibration mode
 	 */
 	public void stopCalibration() {
 		calibrate = false;
 	}
-	
+
 	/**
 	 * Toggles the calibration mode
 	 */
@@ -113,44 +120,45 @@ public class Keystone {
 	public String version() {
 		return VERSION;
 	}
-	
+
 	/**
 	 * Saves the layout to an XML file.
 	 */
 	public void save(String filename) {
 
-		XMLElement root = new XMLElement("<keystone></keystone>");
+		XMLElement root = new XMLElement("keystone");
 
 		// create XML elements for each surface containing the resolution
 		// and control point data
 		for (CornerPinSurface s : surfaces) {
-			String fmt = "<surface res=\"%d\" x=\"%f\" y=\"%f\"></surface>";
-			String fmted = String.format(fmt, s.getRes(), s.x, s.y);
-			XMLElement xml = new XMLElement(fmted); 
-			
-			for (int i=0; i < s.mesh.length; i++) {
-				if (s.mesh[i].isControlPoint()) {
-					fmt = "<point i=\"%d\" x=\"%f\" y=\"%f\" u=\"%f\" v=\"%f\"></point>";
-					fmted = String.format(fmt, i, s.mesh[i].x, s.mesh[i].y, s.mesh[i].u, s.mesh[i].v);
-					xml.addChild(new XMLElement(fmted));
-				}
-			}
-			
+
+			XMLElement xml = s.save();
 			root.addChild(xml);
 		}
 
 		// write the settings to keystone.xml in the sketch's data folder
+
+		PrintWriter printWriter = parent
+				.createWriter(parent.dataPath(filename));
+		XMLWriter xmlWriter = new XMLWriter(printWriter);
+
 		try {
-			OutputStream stream = parent.createOutput(parent.dataPath(filename));
-			XMLWriter writer = new XMLWriter(stream);
-			writer.write(root, true);
-		} catch (Exception e) {
+			xmlWriter.write(root);
+		} catch (IOException e) {
 			PApplet.println(e.getStackTrace());
 		}
-		
+
+		// try {
+		// OutputStream stream = parent.createOutput(parent.dataPath(filename));
+		// XMLWriter writer = new XMLWriter(stream);
+		// writer.write(root, true);
+		// } catch (Exception e) {
+		// PApplet.println(e.getStackTrace());
+		// }
+
 		PApplet.println("Keystone: layout saved to " + filename);
 	}
-	
+
 	/**
 	 * Saves the current layout into "keystone.xml"
 	 */
@@ -163,25 +171,24 @@ public class Keystone {
 	 */
 	public void load(String filename) {
 		XMLElement root = new XMLElement(parent, parent.dataPath(filename));
-		for (int i=0; i < root.getChildCount(); i++) {
+		for (int i = 0; i < root.getChildCount(); i++) {
 			surfaces.get(i).load(root.getChild(i));
 		}
 		PApplet.println("Keystone: layout loaded from " + filename);
 	}
-	
+
 	/**
 	 * Loads a saved layout from "keystone.xml"
 	 */
 	public void load() {
 		load("keystone.xml");
 	}
-	
 
 	/**
 	 * @invisible
 	 */
 	public void mouseEvent(MouseEvent e) {
-		
+
 		// ignore input events if the calibrate flag is not set
 		if (!calibrate)
 			return;
@@ -193,9 +200,9 @@ public class Keystone {
 
 		case MouseEvent.MOUSE_PRESSED:
 			CornerPinSurface top = null;
-			// navigate the list backwards, as to select 
-			for (int i=surfaces.size()-1; i >= 0; i--) {
-				CornerPinSurface s = (CornerPinSurface)surfaces.get(i);
+			// navigate the list backwards, as to select
+			for (int i = surfaces.size() - 1; i >= 0; i--) {
+				CornerPinSurface s = (CornerPinSurface) surfaces.get(i);
 				dragged = s.select(x, y);
 				if (dragged != null) {
 					top = s;
@@ -206,12 +213,12 @@ public class Keystone {
 			if (top != null) {
 				// moved the dragged surface to the beginning of the list
 				// this actually breaks the load/save order.
-				// in the new version, add IDs to surfaces so we can just 
-				// re-load in the right order (or create a separate list 
+				// in the new version, add IDs to surfaces so we can just
+				// re-load in the right order (or create a separate list
 				// for selection/rendering)
-				//int i = surfaces.indexOf(top);
-				//surfaces.remove(i);
-				//surfaces.add(0, top);
+				// int i = surfaces.indexOf(top);
+				// surfaces.remove(i);
+				// surfaces.add(0, top);
 			}
 			break;
 

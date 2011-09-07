@@ -404,18 +404,43 @@ public class CornerPinSurface implements Draggable {
 	 *            Populates values from an XML object
 	 */
 	void load(XMLElement xml) {
-		this.x = xml.getFloatAttribute("x");
-		this.y = xml.getFloatAttribute("y");
+		
+		this.x = xml.getFloat("x");
+		this.y = xml.getFloat("y");
 		// reload the mesh points
 		for (int i = 0; i < xml.getChildCount(); i++) {
 			XMLElement point = xml.getChild(i);
-			MeshPoint mp = mesh[point.getIntAttribute("i")];
-			mp.x = point.getFloatAttribute("x");
-			mp.y = point.getFloatAttribute("y");
-			mp.u = point.getFloatAttribute("u");
-			mp.v = point.getFloatAttribute("v");
+			MeshPoint mp = mesh[point.getInt("i")];
+			mp.x = point.getFloat("x");
+			mp.y = point.getFloat("y");
+			mp.u = point.getFloat("u");
+			mp.v = point.getFloat("v");
 			mp.setControlPoint(true);
 		}
 		calculateMesh();
 	}
+	
+	XMLElement save(){
+		
+		XMLElement parent = new XMLElement("surface");
+		
+		parent.setFloat("x", x);
+		parent.setFloat("y", y);
+		
+		for (int i=0; i < mesh.length; i++) {
+			if (mesh[i].isControlPoint()) {
+//				fmt = "point i=\"%d\" x=\"%f\" y=\"%f\" u=\"%f\" v=\"%f\"";
+//				fmted = String.format(fmt, i, s.mesh[i].x, s.mesh[i].y, s.mesh[i].u, s.mesh[i].v);
+				XMLElement point = new XMLElement("point");
+				point.setFloat("x", mesh[i].x);
+				point.setFloat("y", mesh[i].y);
+				point.setFloat("u", mesh[i].u);
+				point.setFloat("v", mesh[i].v);
+				point.setFloat("i", i);
+				parent.addChild(point);
+			}
+		}
+		return parent;
+	}
+	
 }
