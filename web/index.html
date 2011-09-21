@@ -1,7 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head>
-
-<title>##yourLibrary##</title><meta name="description" content="a library for the programming environment processing" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>##project.name##</title>
+<meta name="description" content="a library for the programming environment processing" />
 <meta name="keywords" content="processing.org, library" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 <meta http-equiv="Content-Language" content="en-us" />
@@ -12,14 +14,13 @@
 <meta name="Rating" content="General" />
 <meta name="revisit-after" content="7 Days" />
 <meta name="doc-class" content="Living Document" />
-<link rel="stylesheet" type="text/css" href="./stylesheet.css" /></head>
-
+<link rel="stylesheet" type="text/css" href="./stylesheet.css">
+</head>
 <body>
 	<div id="container">
 	
 		<div id="header">
-			<!--  <h1>##yourLibrary##</h1> -->
-			<a href="http://keystonep5.sourceforge.net"><img src="keystone.png" /></a>
+			<a href="http://keystonep5.sourceforge.net"><img src="keystone.png" alt="#project.name"/></a>
 		</div>
 		
 		<div id="menu" class="clear">
@@ -38,11 +39,13 @@
 		<div id="content" class="clear">
 			
 			<div id="about">
-			<h2>##yourLibrary##</h2>
+			<h2>##project.name##</h2>
 			<p>
-			A library by <a href="##yourLink##">##author##</a> for the programming environment <a href="http://www.processing.org" target="_blank">processing</a>. Last update, ##date##.
+			A library by <a href="##yourLink##">##author.name##</a> for the programming environment <a href="http://www.processing.org" target="_blank">processing</a>. Last update, ##date##.
 			</p>
-			<p>Keystone
+			<p>
+			
+			Keystone
 is a video projection mapping library for Processing. Right now it
 allows you to warp your Processing sketches onto any flat surface by
 using corner pin keystoning, regardless of your projector's position
@@ -52,65 +55,65 @@ models or curved surfaces and edge blending of multiple projector
 screens.&nbsp;<br /><br />
 
 This is a <i>very</i> alpha release, which means the API could (and probably will) change in future releases. Please
-send feedback or feature requests!</p>
-<p>
-Version 2 has some new features!
-<ul>
-<li>- improved perspective calculation using JAI (Eduardo Moriana)</li>
-<li>- fixed the XML load/save functionality (Andres Colubri)</li>
-</ul>
-</p>
-</div>
-			 
+send feedback or feature requests!<br />
+
+<br />
+<b>Version 2 has some new features!</b><br>
+- improved perspective calculation using JAI (Eduardo Moriana)<br />
+- fixed the XML load/save functionality (Andres Colubri)<br />
+			
+			</p>
+			</div>
+			
 			<div> 
 			<object width="400" height="300"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=6483547&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1" /><embed src="http://vimeo.com/moogaloop.swf?clip_id=6483547&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="400" height="300"></embed></object>
 			</div>
 			
 			<p>&nbsp;</p>
-												
+			
 			<div id="download" class="clear">
 			<h2>Download</h2>
 			<p>
-			Download ##yourLibrary## version ##versionNumber## in 
-			<a href="./download/##yourLibrary##.zip">.zip format</a>.
+			Download ##project.name## version ##project.version## in 
+			<a href="./download/##project.name##-##project.version##.zip">.zip format</a>.
 			</p>
 			<h2>Installation</h2>
 			<p>
-Unzip and put the extracted ##yourLibrary## folder into the libraries
-folder of your processing sketches. Reference and examples are included
-in the ##yourLibrary## folder. </p>
+			Unzip and put the extracted ##project.name## folder into the libraries folder of your processing sketches. Reference and examples are included in the ##project.name## folder.
+			</p>
 			<p>If you are running this on Windows or Linux, you will need to also 
 			install the <a href="http://download.java.net/media/jai/builds/release/1_1_3/">Java Advanced Imaging library</a> for your platform.</p> 
+			
 			</div>	
 			
 			
 			<div id="resources">
-			<p><strong>Keywords</strong> ##keywords##</p>
+			<p><strong>Keywords</strong> ##project.keywords##</p>
 			<p><strong>Reference</strong>. Have a look at the javadoc reference <a href="./reference/index.html" target="_blank">here</a>. a copy of the reference is included in the .zip as well.</p>		
-			<p><strong>Source</strong>. The source code of ##yourLibrary## is available at <a href="##source:url##">##source:host##</a>, and its repository can be browsed <a href="##source:repository##" target="_blank">here</a>.</p>			
+			<p><strong>Source</strong>. The source code of ##project.name## is available at <a href="##source.url##">##source.host##</a>, and its repository can be browsed <a href="##source.repository##" target="_blank">here</a>.</p>			
 			</div>
 			
 			<div id="examples" class="clear">
 			<h2>Examples</h2>
-			<p>Find a list of examples in the current distribution of ##yourLibrary##, or have a look at them by following the links below.</p>
+			<p>Find a list of examples in the current distribution of ##project.name##, or have a look at them by following the links below.</p>
 			<ul>
-			##examples##
+			##project.examples##
 			</ul>
 			</div>
-			 
+			
+			
 			<div id="info">
 			<h2>Tested</h2>
 			<p>
 			<!-- on which platform has the library been tested? -->
-			<strong>Platform</strong> ##tested:platform##
+			<strong>Platform</strong> ##tested.platform##
 			
 			<!-- which processing version did you use for testing your library? -->
-			<br /><strong>Processing</strong> ##tested:processingVersion##
-			<!-- does your library depend on any other library or framework?
-			<br /><strong>Dependencies</strong> ##tested:dependencies##
-			-->
-			</p>
+			<br /><strong>Processing</strong> ##tested.processingversion##
 			
+			<!-- does your library depend on any other library or framework? -->
+			<br /><strong>Dependencies</strong> ##project.dependencies##
+			</p>
 			</div>
 		
 			
@@ -140,13 +143,14 @@ in the ##yourLibrary## folder. </p>
 			<div id="images" class="clear">
 			</div>
 			-->
+			
+			
 			<br class="clear" />
 		</div>
 		
 		<div id="footer">
-			<p>by ##author##, 2009.</p>
-			<p><a href="http://sourceforge.net/projects/keystonep5"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=269931&amp;type=10" width="80" height="15" alt="Get Keystone for Processing at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a></p>
+			<p>by ##author.name##, ##project.copyright##.</p>
 		</div>
-		<br />
 	</div>
-</body></html>
+</body>
+</html>
