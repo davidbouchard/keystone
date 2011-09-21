@@ -31,7 +31,7 @@ import processing.xml.XMLElement;
 
 /**
  * A simple Corner Pin keystoned surface. The surface is a quad mesh that can be
- * skewed to an abitrary shape by moving its four corners.
+ * skewed to an arbitrary shape by moving its four corners.
  * 
  * September-2011 
  * 
@@ -420,7 +420,7 @@ public class CornerPinSurface implements Draggable {
 		calculateMesh();
 	}
 	
-	XMLElement save(){
+	XMLElement save() {
 		
 		XMLElement parent = new XMLElement("surface");
 		

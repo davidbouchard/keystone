@@ -21,12 +21,13 @@ package deadpixel.keystone;
  * Represents a single point in the mesh, along with its precomputed (u,v) 
  * textur coordinates. 
  */
-class MeshPoint implements Draggable {
+public class MeshPoint implements Draggable {
 	
 	public float x;
 	public float y;
 	public float u;
 	public float v;
+	String id = "";
 
 	boolean isControlPoint;
 	
@@ -48,12 +49,20 @@ class MeshPoint implements Draggable {
 	public void moveTo(float x, float y) {
 		this.x = x - parent.x;
 		this.y = y - parent.y;
+		//parent.calculateMesh(this.id);
 		parent.calculateMesh();
 	}
 	
-	protected void setControlPoint(boolean value) {
-		isControlPoint = value;
+	protected void setControlPoint(boolean cp) {
+		isControlPoint = cp;
 	}
+	
+	/*
+	protected void setControlPoint(String id) {
+		isControlPoint = true;
+		this.id = id;
+	}
+	*/
 	
 	/**
 	 * This creates a new MeshPoint with (u,v) = (0,0) and does
