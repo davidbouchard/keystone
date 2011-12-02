@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-<title>##project.name##</title>
+<title>##library.name##</title>
 <meta name="description" content="a library for the programming environment processing" />
 <meta name="keywords" content="processing.org, library" />
 <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
@@ -20,7 +20,7 @@
 	<div id="container">
 	
 		<div id="header">
-			<a href="http://keystonep5.sourceforge.net"><img src="keystone.png" alt="#project.name"/></a>
+			<a href="http://keystonep5.sourceforge.net"><img src="keystone.png" alt="#library.name"/></a>
 		</div>
 		
 		<div id="menu" class="clear">
@@ -39,9 +39,9 @@
 		<div id="content" class="clear">
 			
 			<div id="about">
-			<h2>##project.name##</h2>
+			<h2>##library.name##</h2>
 			<p>
-			A library by <a href="##yourLink##">##author.name##</a> for the programming environment <a href="http://www.processing.org" target="_blank">processing</a>. Last update, ##date##.
+			A library by <a href="##yourLink##">##author.name##</a> for the programming environment <a href="http://www.processing.org" target="_blank">Processing</a>. Last update, ##date##.
 			</p>
 			<p>
 			
@@ -71,15 +71,17 @@ send feedback or feature requests!<br />
 			
 			<p>&nbsp;</p>
 			
+			
+			
 			<div id="download" class="clear">
 			<h2>Download</h2>
 			<p>
-			Download ##project.name## version ##project.version## in 
-			<a href="./download/##project.name##-##project.version##.zip">.zip format</a>.
+			Download ##library.name## version ##library.prettyVersion## (##library.version##) in 
+			<a href="./download/##library.name##-##library.version##.zip">.zip format</a>.
 			</p>
 			<h2>Installation</h2>
 			<p>
-			Unzip and put the extracted ##project.name## folder into the libraries folder of your processing sketches. Reference and examples are included in the ##project.name## folder.
+			Unzip and put the extracted ##library.name## folder into the libraries folder of your processing sketches. Reference and examples are included in the ##library.name## folder.
 			</p>
 			<p>If you are running this on Windows or Linux, you will need to also 
 			install the <a href="http://download.java.net/media/jai/builds/release/1_1_3/">Java Advanced Imaging library</a> for your platform.</p> 
@@ -88,16 +90,16 @@ send feedback or feature requests!<br />
 			
 			
 			<div id="resources">
-			<p><strong>Keywords</strong> ##project.keywords##</p>
+			<p><strong>Keywords</strong> ##library.keywords##</p>
 			<p><strong>Reference</strong>. Have a look at the javadoc reference <a href="./reference/index.html" target="_blank">here</a>. a copy of the reference is included in the .zip as well.</p>		
-			<p><strong>Source</strong>. The source code of ##project.name## is available at <a href="##source.url##">##source.host##</a>, and its repository can be browsed <a href="##source.repository##" target="_blank">here</a>.</p>			
+			<p><strong>Source</strong>. The source code of ##library.name## is available at <a href="##source.url##">##source.host##</a>, and its repository can be browsed <a href="##source.repository##" target="_blank">here</a>.</p>			
 			</div>
 			
 			<div id="examples" class="clear">
 			<h2>Examples</h2>
-			<p>Find a list of examples in the current distribution of ##project.name##, or have a look at them by following the links below.</p>
+			<p>Find a list of examples in the current distribution of ##library.name##, or have a look at them by following the links below.</p>
 			<ul>
-			##project.examples##
+			##examples##
 			</ul>
 			</div>
 			
@@ -109,10 +111,10 @@ send feedback or feature requests!<br />
 			<strong>Platform</strong> ##tested.platform##
 			
 			<!-- which processing version did you use for testing your library? -->
-			<br /><strong>Processing</strong> ##tested.processingversion##
+			<br /><strong>Processing</strong> ##tested.processingVersion##
 			
 			<!-- does your library depend on any other library or framework? -->
-			<br /><strong>Dependencies</strong> ##project.dependencies##
+			<br /><strong>Dependencies</strong> ##library.dependencies##
 			</p>
 			</div>
 		
