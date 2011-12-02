@@ -44,8 +44,8 @@ public class CornerPinSurface implements Draggable {
 
 	MeshPoint[] mesh;
 
-	float x;
-	float y;
+	public float x;
+	public float y;
 	float clickX;
 	float clickY;
 
@@ -133,6 +133,23 @@ public class CornerPinSurface implements Draggable {
 	 * Renders and applies keystoning to the image using a specific renderer.
 	 */
 	public void render(PGraphics g, PImage texture) {
+		render(g, texture, 0, 0, w, h);
+	}
+	
+	/**
+	 * Renders and applies keystoning to the image using the parent applet's
+	 * renderer.The tX, tY, tW and tH parameters specify which section of the image to 
+	 * render onto this surface.
+	 */
+	public void render(PImage texture, int tX, int tY, int tW, int tH) {
+		render(parent.g, texture, tX, tY, tW, tH);
+	}
+	
+	/**
+	 * Renders and applies keystoning to the image using a specific render. The tX, tY,
+	 * tW and tH parameters specify which section of the image to render onto this surface.
+	 */
+	public void render(PGraphics g, PImage texture, int tX, int tY, int tW, int tH) {
 		g.pushMatrix();
 		g.translate(x, y);
 		if (Keystone.calibrate)
@@ -142,17 +159,26 @@ public class CornerPinSurface implements Draggable {
 		g.fill(255);
 		g.beginShape(PApplet.QUADS);
 		g.texture(texture);
+		float u, v = 0;
 		for (int x = 0; x < res - 1; x++) {
 			for (int y = 0; y < res - 1; y++) {
 				MeshPoint mp;
 				mp = mesh[(x) + (y) * res];
-				g.vertex(mp.x, mp.y, mp.u, mp.v);
+				u = PApplet.map(mp.u, 0, w, tX, tX + tW);
+				v = PApplet.map(mp.v, 0, h, tY, tY + tH);
+				g.vertex(mp.x, mp.y, u, v);
 				mp = mesh[(x + 1) + (y) * res];
-				g.vertex(mp.x, mp.y, mp.u, mp.v);
+				u = PApplet.map(mp.u, 0, w, tX, tX + tW);
+				v = PApplet.map(mp.v, 0, h, tY, tY + tH);
+				g.vertex(mp.x, mp.y, u, v);
 				mp = mesh[(x + 1) + (y + 1) * res];
-				g.vertex(mp.x, mp.y, mp.u, mp.v);
+				u = PApplet.map(mp.u, 0, w, tX, tX + tW);
+				v = PApplet.map(mp.v, 0, h, tY, tY + tH);
+				g.vertex(mp.x, mp.y, u, v);
 				mp = mesh[(x) + (y + 1) * res];
-				g.vertex(mp.x, mp.y, mp.u, mp.v);
+				u = PApplet.map(mp.u, 0, w, tX, tX + tW);
+				v = PApplet.map(mp.v, 0, h, tY, tY + tH);
+				g.vertex(mp.x, mp.y, u, v);
 			}
 		}
 		g.endShape(PApplet.CLOSE);
