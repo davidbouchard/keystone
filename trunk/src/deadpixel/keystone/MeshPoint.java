@@ -19,7 +19,7 @@ package deadpixel.keystone;
 
 /**
  * Represents a single point in the mesh, along with its precomputed (u,v) 
- * textur coordinates. 
+ * texture coordinates. 
  */
 public class MeshPoint implements Draggable {
 	
