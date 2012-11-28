@@ -23,9 +23,12 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import processing.core.*;
-import processing.xml.XMLElement;
-import processing.xml.XMLWriter;
+import processing.data.XML;
 
 /**
  * This class manages the creation and calibration of keystoned surfaces.
@@ -40,7 +43,7 @@ import processing.xml.XMLWriter;
  */
 public class Keystone {
 
-	public final String VERSION = "002";
+	public final String VERSION = "003";
 
 	PApplet parent;
 
@@ -64,12 +67,14 @@ public class Keystone {
 		dragged = null;
 
 		// check the renderer type
-		// issue a warning if its PGraphics2D
+		// issue a warning if it's PGraphicsJava2D
 		PGraphics pg = (PGraphics)parent.g;
-		if ((pg instanceof PGraphics2D) ) {
+		if ((pg instanceof PGraphicsJava2D) ) {
 			PApplet.println("The keystone library will not work with PGraphics2D as the renderer because it relies on texture mapping. " +
 					"Try P3D, OPENGL or GLGraphics.");
 		}
+		
+		PApplet.println("Keystone " + VERSION);
 	}
 
 	/**
@@ -126,12 +131,12 @@ public class Keystone {
 	 */
 	public void save(String filename) {
 
-		XMLElement root = new XMLElement("keystone");
+		XML root = new XML("keystone");
 
 		// create XML elements for each surface containing the resolution
 		// and control point data
 		for (CornerPinSurface s : surfaces) {
-			XMLElement surface = new XMLElement("surface");
+			XML surface = new XML("surface");
 			surface.setInt("res", s.getRes());
 			surface.setFloat("x", s.x);
 			surface.setFloat("y", s.y);
@@ -139,7 +144,7 @@ public class Keystone {
 			surface.setInt("h", s.h);
 			for (int i=0; i < s.mesh.length; i++) {
 				if (s.mesh[i].isControlPoint()) {
-					XMLElement point = new XMLElement("point");
+					XML point = new XML("point");
 					point.setInt("i", i);
 					point.setFloat("x", s.mesh[i].x);
 					point.setFloat("y", s.mesh[i].y);
@@ -157,8 +162,7 @@ public class Keystone {
 		// write the settings to keystone.xml in the sketch's data folder
 		try {
 			OutputStream stream = parent.createOutput(parent.dataPath(filename));
-			XMLWriter writer = new XMLWriter(stream);
-			writer.write(root, true);
+			root.save(stream); 
 		} catch (Exception e) {
 			PApplet.println(e.getStackTrace());
 		}
@@ -177,12 +181,18 @@ public class Keystone {
 	 * Loads a saved layout from a given XML file
 	 */
 	public void load(String filename) {
-		XMLElement root = new XMLElement(parent, parent.dataPath(filename));
+		XML root;
+		try {
+			root = new XML(parent, parent.dataPath(filename));
+		} catch (Exception e) {
+			PApplet.println("Keystone: FAILED TO LOAD LAYOUT: " + filename);
+			return;
+		}
 		/*
 		// Guy's version -- need to figure out why this doesn't work
 		surfaces.clear();
 		for (int i=0; i < root.getChildCount(); i++) {
-			XMLElement surfaceEl = root.getChild(i);
+			XML surfaceEl = root.getChild(i);
 			int w = surfaceEl.getInt("w");
 			int h = surfaceEl.getInt("h");
 			int res = surfaceEl.getInt("res");
@@ -190,8 +200,10 @@ public class Keystone {
 			surface.load(surfaceEl);
 		}
 		*/
-		for (int i=0; i < root.getChildCount(); i++) {
-			surfaces.get(i).load(root.getChild(i));
+		
+		XML[] surfaceXML = root.getChildren("surface");
+		for (int i=0; i < surfaceXML.length; i++) {
+			surfaces.get(i).load(surfaceXML[i]);
 		}
 
 		PApplet.println("Keystone: layout loaded from " + filename);
@@ -223,7 +235,7 @@ public class Keystone {
 			CornerPinSurface top = null;
 			// navigate the list backwards, as to select 
 			for (int i=surfaces.size()-1; i >= 0; i--) {
-				CornerPinSurface s = (CornerPinSurface)surfaces.get(i);
+				CornerPinSurface s = surfaces.get(i);
 				dragged = s.select(x, y);
 				if (dragged != null) {
 					top = s;

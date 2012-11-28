@@ -27,7 +27,7 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.core.PVector;
-import processing.xml.XMLElement;
+import processing.data.XML;
 
 /**
  * A simple Corner Pin keystoned surface. The surface is a quad mesh that can be
@@ -365,15 +365,14 @@ public class CornerPinSurface implements Draggable {
 
 	/**
 	 * Interpolates the position of the points in the mesh according to the 4
-	 * corners TODO: allow for abritrary control points, not just the four
+	 * corners TODO: allow for arbitrary control points, not just the four
 	 * corners
 	 */
 
 	protected void calculateMesh() {
-
-		PerspectiveTransform transform = PerspectiveTransform.getQuadToQuad(0,
-				0, w, 0, w, h, 0,
-				h, // source to
+		
+		// The float constructor is deprecated, so casting everything to double
+		PerspectiveTransform transform = PerspectiveTransform.getQuadToQuad(0, 0, w, 0, w, h, 0, h, // source to
 				mesh[TL].x, mesh[TL].y, mesh[TR].x, mesh[TR].y, mesh[BR].x,
 				mesh[BR].y, mesh[BL].x, mesh[BL].y); // dest
 
@@ -429,13 +428,13 @@ public class CornerPinSurface implements Draggable {
 	 * 
 	 *            Populates values from an XML object
 	 */
-	void load(XMLElement xml) {
+	void load(XML xml) {
 		
 		this.x = xml.getFloat("x");
 		this.y = xml.getFloat("y");
 		// reload the mesh points
-		for (int i = 0; i < xml.getChildCount(); i++) {
-			XMLElement point = xml.getChild(i);
+		XML[] pointsXML = xml.getChildren("point");
+		for (XML point : pointsXML) {
 			MeshPoint mp = mesh[point.getInt("i")];
 			mp.x = point.getFloat("x");
 			mp.y = point.getFloat("y");
@@ -446,9 +445,9 @@ public class CornerPinSurface implements Draggable {
 		calculateMesh();
 	}
 	
-	XMLElement save() {
+	XML save() {
 		
-		XMLElement parent = new XMLElement("surface");
+		XML parent = new XML("surface");
 		
 		parent.setFloat("x", x);
 		parent.setFloat("y", y);
@@ -457,7 +456,7 @@ public class CornerPinSurface implements Draggable {
 			if (mesh[i].isControlPoint()) {
 //				fmt = "point i=\"%d\" x=\"%f\" y=\"%f\" u=\"%f\" v=\"%f\"";
 //				fmted = String.format(fmt, i, s.mesh[i].x, s.mesh[i].y, s.mesh[i].u, s.mesh[i].v);
-				XMLElement point = new XMLElement("point");
+				XML point = new XML("point");
 				point.setFloat("x", mesh[i].x);
 				point.setFloat("y", mesh[i].y);
 				point.setFloat("u", mesh[i].u);
