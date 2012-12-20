@@ -17,7 +17,6 @@
 
 package deadpixel.keystone;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -29,6 +28,7 @@ import org.xml.sax.SAXException;
 
 import processing.core.*;
 import processing.data.XML;
+import processing.event.MouseEvent;
 
 /**
  * This class manages the creation and calibration of keystoned surfaces.
@@ -39,7 +39,7 @@ import processing.data.XML;
  * The Keystone object also provides load/save functionality, once you've calibrated the layout to 
  * your liking. 
  * 
- * Version: 0.11
+ * Version: 0.31
  */
 public class Keystone {
 
@@ -61,7 +61,7 @@ public class Keystone {
 	 */
 	public Keystone(PApplet parent) {
 		this.parent = parent;
-		this.parent.registerMouseEvent(this);
+		this.parent.registerMethod("mouseEvent", this);
 
 		surfaces = new ArrayList<CornerPinSurface>();
 		dragged = null;
@@ -229,9 +229,9 @@ public class Keystone {
 		int x = e.getX();
 		int y = e.getY();
 
-		switch (e.getID()) {
+		switch (e.getAction()) {
 
-		case MouseEvent.MOUSE_PRESSED:
+		case MouseEvent.PRESS:
 			CornerPinSurface top = null;
 			// navigate the list backwards, as to select 
 			for (int i=surfaces.size()-1; i >= 0; i--) {
@@ -255,12 +255,12 @@ public class Keystone {
 			}
 			break;
 
-		case MouseEvent.MOUSE_DRAGGED:
+		case MouseEvent.DRAG:
 			if (dragged != null)
 				dragged.moveTo(x, y);
 			break;
 
-		case MouseEvent.MOUSE_RELEASED:
+		case MouseEvent.RELEASE:
 			dragged = null;
 			break;
 		}
