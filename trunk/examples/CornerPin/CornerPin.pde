@@ -36,7 +36,7 @@ void setup() {
   // want projected
   // note that we're matching the resolution of the
   // CornerPinSurface.
-  // (The offscreen buffer can be P2D)
+  // (The offscreen buffer can be P2D or P3D)
   offscreen = createGraphics(400, 300, P2D);
 }
 
@@ -63,11 +63,10 @@ void draw() {
 }
 
 void keyPressed() {
-
   switch(key) {
   case 'c':
     // enter/leave calibration mode, where surfaces can be warped 
-    // & moved
+    // and moved
     ks.toggleCalibration();
     break;
 
