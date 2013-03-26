@@ -1,4 +1,4 @@
-<project name="Keystone" default="clean" basedir="../">
+<project name="ProcessingLibs" default="clean" basedir="../">
 
     
 <!--	
@@ -30,13 +30,13 @@
 	
 	<!-- set the OS properties -->
 	<condition property="is.mac">
-		<os family="mac" />
+        <os family="mac" />
 	</condition>
 	<condition property="is.windows">
-		<os family="windows" />
+        <os family="windows" />
 	</condition>
 	<condition property="is.unix">
-	    <os family="unix" />
+        <os family="unix" />
 	</condition>
 	
 	
@@ -78,7 +78,7 @@
 	
 	<target name="init"> 
 		<echo>${line}
-	Building the Processing library ${project.name} ${library.version}
+    Building the Processing library ${project.name} ${library.version}
 ${line}
 	src path        ${project.src}
 	bin path        ${project.bin}
@@ -274,6 +274,7 @@ ${line}
         <replaceregexp file="${file}" match="##library.url##" replace="${library.url}" flags="g" />
         <replaceregexp file="${file}" match="##library.category##" replace="${library.category}" flags="g" />
         <replaceregexp file="${file}" match="##library.sentence##" replace="${library.sentence}" flags="g" />
+    	<replaceregexp file="${file}" match="##library.paragraph##" replace="${library.paragraph}" flags="g" />
     	<replaceregexp file="${file}" match="##library.keywords##" replace="${library.keywords}" flags="g" />
         <replaceregexp file="${file}" match="##library.dependencies##" replace="${library.dependencies}" flags="g" />
     	
@@ -298,24 +299,26 @@ ${line}
 	<target name="generate.zip" if="is.normal">
 		<!-- zip the distribution of the library -->
 		
-		<move todir="${project.dist.version}/tmp/${project.name}-${library.version}">
+		<move todir="${project.dist.version}/tmp/${project.name}">
   			<fileset dir="${project.dist.version}/${project.name}" />
   		</move>
   		
-  		<copy file="${project.dist.version}/tmp/${project.name}-${library.version}/library.properties" tofile="${project.dist.version}/web/download/${project.name}-${library.version}.txt" />
-		<copy file="${project.dist.version}/tmp/${project.name}-${library.version}/library.properties" tofile="${project.dist.version}/web/download/${project.name}.txt" />
+  		<copy file="${project.dist.version}/tmp/${project.name}/library.properties" tofile="${project.dist.version}/web/download/${project.name}.txt" />
 		        
-		<zip destfile="${project.dist.version}/${project.name}-${library.version}.zip"
-  	       basedir="${project.dist.version}/tmp/${project.name}-${library.version}"
+		<zip destfile="${project.dist.version}/${project.name}.zip"
+  	       basedir="${project.dist.version}/tmp"
   	       excludes="**/.DS_Store"
 		/>
 		
-        <move file="${project.dist.version}/${project.name}-${library.version}.zip" todir="${project.dist.version}/web/download" />
-		<copy file="${project.dist.version}/web/download/${project.name}-${library.version}.zip" tofile="${project.dist.version}/web/download/${project.name}.zip" />
+        <move file="${project.dist.version}/${project.name}.zip" todir="${project.dist.version}/web/download" />
+		
+		<copy file="${project.dist.version}/web/download/${project.name}.zip" tofile="${project.dist.version}/web/download/${project.name}-${library.version}.zip" />
+		<copy file="${project.dist.version}/web/download/${project.name}.txt" tofile="${project.dist.version}/web/download/${project.name}-${library.version}.txt" />
 		
 		<move todir="${project.dist.version}">
 			<fileset dir="${project.dist.version}/web" />
 		</move>
+		
 		<delete dir="${project.dist.version}/tmp" />
 	</target>
 	
@@ -330,37 +333,37 @@ ${line}
 	</target>
 		
 	
-	
-	<target name="addExamples">
-		<echo>${exampleDir}</echo>
-		<propertyregex property="pde"
+    
+    <target name="addExamples">
+        <echo>${exampleDir}</echo>
+        <propertyregex property="pde"
               input="${exampleDir}"
               regexp="^.*\/(.*)$"
               select="\1"
               casesensitive="false"
               defaultValue="${exampleDir}" />
 
-              <propertyregex property="data"
+          <propertyregex property="data"
               input="${exampleDir}"
               regexp="data$"
               select="true"
               casesensitive="false"
               defaultValue="false" />
 
-              <if>
- 					<equals arg1="${data}" arg2="false" />
- 				<then>
-   					<replaceregexp file="${project.dist.version}/web/index.html"
-	  					match="(##examples##)"
-	  	  				replace="&lt;li&gt;&lt;a href=&quot;examples/${exampleDir}/${pde}.pde&quot;&gt;${exampleDir}&lt;/a&gt;&lt;/li&gt; \1"
-	  	  				flags="g" />
- 				</then>
- 				<else>
-   					<echo message="Data folder, attention." />
- 				</else>
-			</if>
-	</target>
-	
+          <if>
+              <equals arg1="${data}" arg2="false" />
+              <then>
+                  <replaceregexp file="${project.dist.version}/web/index.html"
+                      match="(##examples##)"
+                      replace="&lt;li&gt;&lt;a href=&quot;examples/${exampleDir}/${pde}.pde&quot;&gt;${exampleDir}&lt;/a&gt;&lt;/li&gt; \1"
+                      flags="g" />
+              </then>
+              <else>
+                  <echo message="Data folder, attention." />
+              </else>
+          </if>
+    </target>   
+    
 	
 	
 	<target name="clean" depends="library.run">
