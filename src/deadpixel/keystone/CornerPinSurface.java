@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 David Bouchard
+ * Copyright (C) 2009-13 David Bouchard
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,13 +30,12 @@ import processing.core.PVector;
 import processing.data.XML;
 
 /**
- * A simple Corner Pin keystoned surface. The surface is a quad mesh that can be
- * skewed to an arbitrary shape by moving its four corners.
+ * A simple Corner Pin "keystoned" surface. The surface is a quad mesh that can
+ * be skewed to an arbitrary shape by moving its four corners.
  * 
- * September-2011 
+ * September-2011 Added JAI library for keystone calculus (@edumo)
  * 
- * Added JAI library for keystone calculus (@edumo)
- * 
+ * March-2013 Added methods to programmatically move the corner points
  */
 public class CornerPinSurface implements Draggable {
 
@@ -51,19 +50,19 @@ public class CornerPinSurface implements Draggable {
 
 	int res;
 
-	final int TL; // top left
-	final int TR; // top right
-	final int BL; // bottom left
-	final int BR; // bottom right
+	// Daniel Wiedeman: made them public static
+	public static int TL; // top left
+	public static int TR; // top right
+	public static int BL; // bottom left
+	public static int BR; // bottom right
 
 	int w;
 	int h;
 
 	int gridColor;
 	int controlPointColor;
-	
-	//Jai class for keystone calculus
 
+	// Jai class for keystone calculus
 	WarpPerspective warpPerspective = null;
 
 	/**
@@ -112,6 +111,23 @@ public class CornerPinSurface implements Draggable {
 		this.controlPointColor = 0xFF00FF00;
 	}
 
+	
+	// ///////////////
+	// MANUAL MESHPOINT MOVE FUNCTIONS
+	// added by Daniel Wiedemann
+	// to move meshpoints via keyboard for example (in OSX the mouse can not go
+	// further then the screen bounds, which is obviously a very unpleasant
+	// thing if corner points have to be moved across them)
+	// ///////////////
+	/**
+	 * Manually move one of the corners for this surface by some amount. 
+	 * The "corner" parameter should be either: CornerPinSurface.TL, CornerPinSurface.BL, 
+	 * CornerPinSurface.TR or CornerPinSurface.BR*
+	 */
+	public void moveMeshPointBy(int corner, float moveX, float moveY) {
+		mesh[corner].moveTo(mesh[corner].x + moveX, mesh[corner].y + moveY);
+	}
+
 	/**
 	 * @return The surface's mesh resolution, in number of "tiles"
 	 */
@@ -135,21 +151,23 @@ public class CornerPinSurface implements Draggable {
 	public void render(PGraphics g, PImage texture) {
 		render(g, texture, 0, 0, w, h);
 	}
-	
+
 	/**
 	 * Renders and applies keystoning to the image using the parent applet's
-	 * renderer.The tX, tY, tW and tH parameters specify which section of the image to 
-	 * render onto this surface.
+	 * renderer.The tX, tY, tW and tH parameters specify which section of the
+	 * image to render onto this surface.
 	 */
 	public void render(PImage texture, int tX, int tY, int tW, int tH) {
 		render(parent.g, texture, tX, tY, tW, tH);
 	}
-	
+
 	/**
-	 * Renders and applies keystoning to the image using a specific render. The tX, tY,
-	 * tW and tH parameters specify which section of the image to render onto this surface.
+	 * Renders and applies keystoning to the image using a specific render. The
+	 * tX, tY, tW and tH parameters specify which section of the image to render
+	 * onto this surface.
 	 */
-	public void render(PGraphics g, PImage texture, int tX, int tY, int tW, int tH) {
+	public void render(PGraphics g, PImage texture, int tX, int tY, int tW,
+			int tH) {
 		g.pushMatrix();
 		g.translate(x, y);
 		if (Keystone.calibrate)
@@ -201,7 +219,7 @@ public class CornerPinSurface implements Draggable {
 				cy - (int) y));
 		return new PVector((int) point.getX(), (int) point.getY());
 	}
-	
+
 	private PVector getTransformedMouseOld() {
 
 		// this was more of a pain than I tought!
@@ -265,12 +283,10 @@ public class CornerPinSurface implements Draggable {
 		return new PVector((int) (s * w), (int) (t * h));
 	}
 
-
 	public PVector getTransformedMouse() {
 		return getTransformedCursor(parent.mouseX, parent.mouseY);
 	}
 
-	
 	// 2d cross product
 	private float cross2(float x0, float y0, float x1, float y1) {
 		return x0 * y1 - y0 * x1;
@@ -368,16 +384,17 @@ public class CornerPinSurface implements Draggable {
 	 * corners TODO: allow for arbitrary control points, not just the four
 	 * corners
 	 */
-
 	protected void calculateMesh() {
-		
+
 		// The float constructor is deprecated, so casting everything to double
-		PerspectiveTransform transform = PerspectiveTransform.getQuadToQuad(0, 0, w, 0, w, h, 0, h, // source to
+		PerspectiveTransform transform = PerspectiveTransform.getQuadToQuad(0,
+				0, w, 0, w, h, 0,
+				h, // source to
 				mesh[TL].x, mesh[TL].y, mesh[TR].x, mesh[TR].y, mesh[BR].x,
 				mesh[BR].y, mesh[BL].x, mesh[BL].y); // dest
 
 		warpPerspective = new WarpPerspective(transform);
-		
+
 		float xStep = (float) w / (res - 1);
 		float yStep = (float) h / (res - 1);
 
@@ -388,7 +405,7 @@ public class CornerPinSurface implements Draggable {
 
 			float x = i % res;
 			float y = i / res;
-			
+
 			x *= xStep;
 			y *= yStep;
 
@@ -429,7 +446,7 @@ public class CornerPinSurface implements Draggable {
 	 *            Populates values from an XML object
 	 */
 	void load(XML xml) {
-		
+
 		this.x = xml.getFloat("x");
 		this.y = xml.getFloat("y");
 		// reload the mesh points
@@ -444,18 +461,19 @@ public class CornerPinSurface implements Draggable {
 		}
 		calculateMesh();
 	}
-	
+
 	XML save() {
-		
+
 		XML parent = new XML("surface");
-		
+
 		parent.setFloat("x", x);
 		parent.setFloat("y", y);
-		
-		for (int i=0; i < mesh.length; i++) {
+
+		for (int i = 0; i < mesh.length; i++) {
 			if (mesh[i].isControlPoint()) {
-//				fmt = "point i=\"%d\" x=\"%f\" y=\"%f\" u=\"%f\" v=\"%f\"";
-//				fmted = String.format(fmt, i, s.mesh[i].x, s.mesh[i].y, s.mesh[i].u, s.mesh[i].v);
+				// fmt = "point i=\"%d\" x=\"%f\" y=\"%f\" u=\"%f\" v=\"%f\"";
+				// fmted = String.format(fmt, i, s.mesh[i].x, s.mesh[i].y,
+				// s.mesh[i].u, s.mesh[i].v);
 				XML point = new XML("point");
 				point.setFloat("x", mesh[i].x);
 				point.setFloat("y", mesh[i].y);
@@ -467,5 +485,5 @@ public class CornerPinSurface implements Draggable {
 		}
 		return parent;
 	}
-	
+
 }
