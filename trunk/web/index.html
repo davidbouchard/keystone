@@ -41,11 +41,11 @@
 			<div id="about">
 			<h2>##library.name##</h2>
 			<p>
-			A library by <a href="##yourLink##">##author.name##</a> for the programming environment <a href="http://www.processing.org" target="_blank">Processing</a>. Last update, ##date##.
+			A library by <a href="##author.url##">##author.name##</a> for the programming environment <a href="http://www.processing.org" target="_blank">Processing</a>. Last update, ##date##.
 			</p>
 			<p>
 		    Keystone
-is a video projection mapping library for Processing. Right now it
+is a video projection mapping library for Processing. Currently, it
 allows you to warp your Processing sketches onto any flat surface by
 using corner pin keystoning, regardless of your projector's position
 and orientation.&nbsp;The goal is to eventually expand this library to
@@ -53,13 +53,13 @@ enable more advanced projection mapping, such as projecting on 3D
 models or curved surfaces and edge blending of multiple projector
 screens.&nbsp;<br /><br />
 
-This is a <i>very</i> alpha release, which means the API could (and probably will) change in future releases. Please
-send feedback or feature requests!<br />
-
 <br />
 <b>Thank you to the following contributors for features added to Keystone:</b><br>
+- fixed the XML load/save once more (Machiel Veltkamp)<br />
 - improved perspective calculation using JAI (Eduardo Moriana)<br />
-- fixed the XML load/save functionality (Andres Colubri)<br />			
+- fixed the XML load/save functionality (Andres Colubri)<br />	
+- added manual control for the surface's corners (Daniel Wiedemann)<br />	
+	
 			</p>
 			</div>
 			
@@ -76,7 +76,7 @@ send feedback or feature requests!<br />
 			<a href="./download/##library.name##-##library.version##.zip">.zip format</a>.
 			<br>
 			For older versions of Processing (1.5.1 and lower), the previous version 
-			is available <a href="./download/keystone-2.zip">.here</a>.<br>		
+			is available <a href="./download/keystone-2.zip">here</a>. Note that this version is no longer maintained.<br>		
 			</p>
 			<h2>Installation</h2>
 			<p>
@@ -85,7 +85,6 @@ send feedback or feature requests!<br />
 			<p>If you are running this on Windows or Linux, you will need to also 
 			install the <a href="http://download.java.net/media/jai/builds/release/1_1_3/">Java Advanced Imaging library</a> for your platform.</p> 			
 			</div>	
-			
 			
 			<div id="resources">
 			<p><strong>Keywords</strong> ##library.keywords##</p>
@@ -100,7 +99,6 @@ send feedback or feature requests!<br />
 			##examples##
 			</ul>
 			</div>
-			
 			
 			<div id="info">
 			<h2>Tested</h2>
