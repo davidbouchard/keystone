@@ -158,15 +158,16 @@ public class Keystone {
 			root.addChild(surface);
 			
 		}
-
+		/*
 		// write the settings to keystone.xml in the sketch's data folder
 		try {
 			OutputStream stream = parent.createOutput(parent.dataPath(filename));
 			root.save(stream); 
 		} catch (Exception e) {
 			PApplet.println(e.getStackTrace());
-		}
-		
+		}		
+		*/
+		parent.saveXML(root, filename);
 		PApplet.println("Keystone: layout saved to " + filename);
 	}
 	
@@ -181,13 +182,8 @@ public class Keystone {
 	 * Loads a saved layout from a given XML file
 	 */
 	public void load(String filename) {
-		XML root;
-		try {
-			root = new XML(parent, parent.dataPath(filename));
-		} catch (Exception e) {
-			PApplet.println("Keystone: FAILED TO LOAD LAYOUT: " + filename);
-			return;
-		}
+		XML root = parent.loadXML(filename);
+		
 		/*
 		// Guy's version -- need to figure out why this doesn't work
 		surfaces.clear();

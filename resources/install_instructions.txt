@@ -1,6 +1,5 @@
 How to install library ##library.name##
 
-
 Install with the "Add Library..." tool
 
 New for Processing 2.0: Add contributed libraries by selecting "Add Library..." 

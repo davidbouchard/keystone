@@ -37,7 +37,7 @@ void setup() {
   // note that we're matching the resolution of the
   // CornerPinSurface.
   // (The offscreen buffer can be P2D or P3D)
-  offscreen = createGraphics(400, 300, P2D);
+  offscreen = createGraphics(400, 300, P3D);
 }
 
 void draw() {
