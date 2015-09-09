@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 David Bouchard
+ * Copyright (C) 2009-15 David Bouchard
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,19 +17,13 @@
 
 package deadpixel.keystone;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
+import processing.awt.PGraphicsJava2D;
 import processing.core.*;
 import processing.data.XML;
 import processing.event.MouseEvent;
-
+import processing.opengl.PGraphics3D;
+ 
 /**
  * This class manages the creation and calibration of keystoned surfaces.
  * 
@@ -43,7 +37,7 @@ import processing.event.MouseEvent;
  */
 public class Keystone {
 
-	public final String VERSION = "003";
+	public final String VERSION = "006";
 
 	PApplet parent;
 
@@ -67,11 +61,11 @@ public class Keystone {
 		dragged = null;
 
 		// check the renderer type
-		// issue a warning if it's PGraphicsJava2D
-		PGraphics pg = (PGraphics)parent.g;
-		if ((pg instanceof PGraphicsJava2D) ) {
-			PApplet.println("The keystone library will not work with PGraphics2D as the renderer because it relies on texture mapping. " +
-					"Try P3D, OPENGL or GLGraphics.");
+		// issue a warning if we're not in 3D mode 
+		PGraphics pg = parent.g;
+		if ((pg instanceof PGraphics3D) == false ) {
+			PApplet.println("The keystone library will not work with 2D graphics as the renderer because it relies on texture mapping. " +
+					"Try P3D or OPENGL.");
 		}
 		
 		PApplet.println("Keystone " + VERSION);

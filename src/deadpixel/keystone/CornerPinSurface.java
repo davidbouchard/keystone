@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009-13 David Bouchard
+ * Copyright (C) 2009-15 David Bouchard
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
