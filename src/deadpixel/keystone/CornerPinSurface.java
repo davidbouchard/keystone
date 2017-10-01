@@ -1,16 +1,16 @@
 /**
  * Copyright (C) 2009-15 David Bouchard
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,9 +32,9 @@ import processing.data.XML;
 /**
  * A simple Corner Pin "keystoned" surface. The surface is a quad mesh that can
  * be skewed to an arbitrary shape by moving its four corners.
- * 
+ *
  * September-2011 Added JAI library for keystone calculus (@edumo)
- * 
+ *
  * March-2013 Added methods to programmatically move the corner points
  */
 public class CornerPinSurface implements Draggable {
@@ -111,7 +111,10 @@ public class CornerPinSurface implements Draggable {
 		this.controlPointColor = 0xFF00FF00;
 	}
 
-	
+	public MeshPoint getMeshPoint(int index) {
+		return mesh[index];
+	}
+
 	// ///////////////
 	// MANUAL MESHPOINT MOVE FUNCTIONS
 	// added by Daniel Wiedemann
@@ -120,8 +123,8 @@ public class CornerPinSurface implements Draggable {
 	// thing if corner points have to be moved across them)
 	// ///////////////
 	/**
-	 * Manually move one of the corners for this surface by some amount. 
-	 * The "corner" parameter should be either: CornerPinSurface.TL, CornerPinSurface.BL, 
+	 * Manually move one of the corners for this surface by some amount.
+	 * The "corner" parameter should be either: CornerPinSurface.TL, CornerPinSurface.BL,
 	 * CornerPinSurface.TR or CornerPinSurface.BR*
 	 */
 	public void moveMeshPointBy(int corner, float moveX, float moveY) {
@@ -210,7 +213,7 @@ public class CornerPinSurface implements Draggable {
 	/**
 	 * This function will give you the position of the mouse in the surface's
 	 * coordinate system.
-	 * 
+	 *
 	 * @return The transformed mouse position
 	 */
 
@@ -431,7 +434,7 @@ public class CornerPinSurface implements Draggable {
 
 	/**
 	 * @invisible
-	 * 
+	 *
 	 *            This moves the surface according to the offset from where the
 	 *            mouse was pressed when selecting the surface.
 	 */
@@ -442,7 +445,7 @@ public class CornerPinSurface implements Draggable {
 
 	/**
 	 * @invisible
-	 * 
+	 *
 	 *            Populates values from an XML object
 	 */
 	void load(XML xml) {
