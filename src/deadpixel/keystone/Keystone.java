@@ -18,6 +18,8 @@
 package deadpixel.keystone;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import processing.awt.PGraphicsJava2D;
 import processing.core.*;
 import processing.data.XML;
@@ -44,6 +46,7 @@ public class Keystone {
 	ArrayList<CornerPinSurface> surfaces;
 
 	Draggable dragged;
+	HashMap<Draggable, HashSet<MeshPoint>> links;
 
 	// calibration mode is application-wide, so I made this flag static
 	// there should only be one Keystone object around anyway
@@ -59,6 +62,7 @@ public class Keystone {
 
 		surfaces = new ArrayList<CornerPinSurface>();
 		dragged = null;
+		links = new HashMap<Draggable, HashSet<MeshPoint>>();
 
 		// check the renderer type
 		// issue a warning if we're not in 3D mode
@@ -207,6 +211,34 @@ public class Keystone {
 	}
 
 
+	public void link(MeshPoint a, MeshPoint b) {
+		HashSet<MeshPoint> set;
+		set = links.get(a);
+		if (set == null) {
+			set = new HashSet<MeshPoint>();
+			links.put(a, set);
+		}
+		set.add(b);
+		set = links.get(b);
+		if (set == null) {
+			set = new HashSet<MeshPoint>();
+			links.put(b, set);
+		}
+		set.add(a);
+	}
+
+	public void unlink(MeshPoint a, MeshPoint b) {
+		HashSet<MeshPoint> set;
+		set = links.get(a);
+		if (set != null) {
+			set.remove(b);
+		}
+		set = links.get(b);
+		if (set != null) {
+			set.remove(a);
+		}
+	}
+
 	int startX, startY;
 
 	/**
@@ -265,6 +297,12 @@ public class Keystone {
 					}
 				}
 				dragged.moveTo(x, y);
+				HashSet<MeshPoint> set = links.get(dragged);
+				if (set != null) {
+					for (MeshPoint pt: set) {
+						pt.moveTo(x, y);
+					}
+				}
 			}
 			break;
 
